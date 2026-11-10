@@ -13,7 +13,23 @@ Multi-Tenant Financial Analytics & Transaction Management Engine
 1. Step 1: Requirements & ER Diagram(#step-1-requirements--er-diagram)
 2. Step 2: Schema as Migrations(#step-2-schema-as-migrations)
 3. Step 3: NoSQL Layer Redis(#step-3-nosql-layer-redis)
-4. Step 4: Query Optimization Evidence(#step-4-query-optimization-evidence)
+
+4. Step 4: Query Optimization Evidence
+   (#step-4-query-optimization-evidence)
+
+### Monthly Spending Summary Query
+
+1. **Query:** Calculate total monthly expenditures grouped by category.
+2. **Before Plan:** Sequential scan on `transactions` table ($850\text{ms}$).
+3. **Change:** Added composite index `idx_transactions_account_date` and optimized date range bounds.
+4. **After Plan (Bitmap Index Scan):**
+
+   ```text Bitmap Heap Scan on transactions  (cost=42.15..850.30 rows=1200 width=36)
+     ->  Bitmap Index Scan on idx_transactions_account_date  (cost=0.00..12.45 rows=1200 width=0)
+   Execution Time: 25.104 ms
+
+   ```
+
 5. Step 5: Backup & Security Artifacts(#step-5-backup--security-artifacts)
 
 ---

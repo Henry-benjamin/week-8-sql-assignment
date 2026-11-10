@@ -8,8 +8,11 @@ CREATE INDEX idx_accounts_user_id ON accounts(user_id);
 -- 2. Index on account_id and transaction_date for fast transaction filtering and pagination
 CREATE INDEX idx_transactions_account_date ON transactions(account_id, transaction_date DESC);
 
+CREATE INDEX idx_transactions_account_date ON transactions(account_id, transaction_date);
+
 -- 3. Index on category_id for category-based spending reports
 CREATE INDEX idx_transactions_category_id ON transactions(category_id);
+
 
 -- 4. Index on merchant name for quick search functionality
 CREATE INDEX idx_transactions_merchant ON transactions(merchant);
