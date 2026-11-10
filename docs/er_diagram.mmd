@@ -1,0 +1,61 @@
+erDiagram
+    users ||--o{ accounts : owns
+    users ||--o{ categories : creates
+    users ||--o{ budgets : sets
+    users ||--o{ audit_logs : triggers
+    accounts ||--o{ transactions : contains
+    categories ||--o{ transactions : classifies
+    categories ||--o{ budgets : restricts
+
+    users {
+        int id PK
+        string email UK
+        string password_hash
+        string full_name
+        string role
+        timestamp created_at
+    }
+
+    accounts {
+        int id PK
+        int user_id FK
+        string account_name
+        string account_type
+        decimal balance
+        timestamp created_at
+    }
+
+    categories {
+        int id PK
+        int user_id FK "Nullable for global"
+        string category_name
+        string icon
+    }
+
+    transactions {
+        int id PK
+        int account_id FK
+        int category_id FK
+        decimal amount
+        timestamp transaction_date
+        string merchant
+        text notes
+    }
+
+    budgets {
+        int id PK
+        int user_id FK
+        int category_id FK
+        decimal monthly_limit
+        string month_year
+    }
+
+    audit_logs {
+        int id PK
+        int user_id FK
+        string action
+        string table_name
+        jsonb old_data
+        jsonb new_data
+        timestamp performed_at
+    }
